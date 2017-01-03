@@ -21,7 +21,7 @@ func New() *Server {
 func (s *Server) setupClient() error {
 	pool := x509.NewCertPool()
 
-	if pems, err := ioutil.ReadFile("ca-certificates.crt"); err != nil {
+	if pems, err := ioutil.ReadFile("ca-bundle-amazonlinux.crt"); err != nil {
 		return err
 	} else {
 		if !pool.AppendCertsFromPEM(pems) {

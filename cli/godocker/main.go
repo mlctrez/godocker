@@ -2,8 +2,9 @@ package main
 
 import (
 	"github.com/mlctrez/godocker/pkg/server"
+	"log"
 )
 
 func main() {
-	server.New().Start()
+	log.Fatal(server.New().Start())
 }
