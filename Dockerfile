@@ -1,7 +1,7 @@
 FROM scratch
 
 ADD bin/godocker /godocker
-ADD bin/ca-bundle-amazonlinux.crt /etc/ssl/certs/ca-certificates.crt
+ADD bin/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 EXPOSE 8080
 

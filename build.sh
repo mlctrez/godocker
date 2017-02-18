@@ -5,7 +5,8 @@ BINDIR=$(pwd)/bin
 mkdir -p bin
 
 echo "copying amazonlinux cert bundle"
-docker run --rm -v $BINDIR:/certcopy amazonlinux cp /etc/ssl/certs/ca-bundle.crt /certcopy/ca-bundle-amazonlinux.crt
+
+docker run --rm -v $BINDIR:/certcopy amazonlinux cp /etc/ssl/certs/ca-bundle.crt /certcopy/ca-certificates.crt
 
 if [ $? -ne 0 ]
 then
@@ -15,12 +16,6 @@ fi
 
 echo "building godocker binary"
 
-# should use this probably, but it messes with the caching of the precompiled binaries
-# CGO_ENABLED=0 GOOS=linux go build -tags netgo -ldflags '-w' -o bin/godocker ./cli/godocker/main.go
-
-# prime the cache - permissions of /usr/local/go/pkg/linux_amd64 may need to be changed to allow this
-# GOOS=linux go install -a github.com/mlctrez/godocker/...
-
-GOOS=linux go build -o bin/godocker ./cli/godocker/main.go
+CGO_ENABLED=0 GOOS=linux go build -tags netgo -ldflags '-w' -o bin/godocker ./cli/godocker/main.go
 
 docker build --tag godocker .
