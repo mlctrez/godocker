@@ -6,7 +6,7 @@ mkdir -p bin
 
 echo "copying amazonlinux cert bundle"
 
-docker run --rm -v $BINDIR:/certcopy amazonlinux cp /etc/ssl/certs/ca-bundle.crt /certcopy/ca-certificates.crt
+docker run --rm -v $BINDIR:/certcopy amazonlinux cp /etc/pki/tls/certs/ca-bundle.crt /certcopy/ca-bundle.crt
 
 if [ $? -ne 0 ]
 then

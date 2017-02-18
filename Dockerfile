@@ -1,7 +1,7 @@
 FROM scratch
 
 ADD bin/godocker /godocker
-ADD bin/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+ADD bin/ca-bundle.crt /etc/pki/tls/certs/ca-bundle.crt
 
 EXPOSE 8080
 
