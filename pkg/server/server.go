@@ -6,8 +6,10 @@ import (
 	"net/http"
 )
 
-type Server struct {}
+// Server is currently just an empty struct that can be added to
+type Server struct{}
 
+// New constructs a new server
 func New() *Server {
 	return &Server{}
 }
@@ -21,6 +23,7 @@ func (s *Server) sslTest(rw http.ResponseWriter, rq *http.Request) {
 	io.Copy(rw, resp.Body)
 }
 
+// Start initiates http.ListenAndServe on this server
 func (s *Server) Start() error {
 
 	http.HandleFunc("/", func(rw http.ResponseWriter, rq *http.Request) {
