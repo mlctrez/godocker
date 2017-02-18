@@ -4,16 +4,6 @@ BINDIR=$(pwd)/bin
 
 mkdir -p bin
 
-echo "copying golang cert bundle"
-# grab a copy of the latest ca-certificates bundle from the golang docker image
-docker run --rm -v $BINDIR:/certcopy golang cp /etc/ssl/certs/ca-certificates.crt /certcopy/ca-bundle-golang.crt
-
-if [ $? -ne 0 ]
-then
-    echo "error copying golang docker ca bundle"
-    exit 1
-fi
-
 echo "copying amazonlinux cert bundle"
 docker run --rm -v $BINDIR:/certcopy amazonlinux cp /etc/ssl/certs/ca-bundle.crt /certcopy/ca-bundle-amazonlinux.crt
 
