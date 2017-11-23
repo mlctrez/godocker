@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/mlctrez/godocker/pkg/server"
 	"log"
+
+	"github.com/mlctrez/godocker/pkg/server"
 )
 
 func main() {
