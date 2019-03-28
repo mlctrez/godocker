@@ -4,7 +4,7 @@
 
 An example for building a minimal golang docker image with ca certificate support.
 
-The ca-certs bundle is copied from the amazon linux docker image and placed in the appropriate directory.
+The ca-certs bundle is copied from the golang linux docker image and placed in the appropriate directory of the scratch image.
 
 Locations of cacert bundles for linux systems can be found in the go source at [crypto/x509/root_linux.go](https://golang.org/src/crypto/x509/root_linux.go)
 

@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 // CloseableServer contains the quit channel and the http.Server
@@ -25,26 +28,18 @@ func New() *CloseableServer {
 	return s
 }
 
-func (s *CloseableServer) sslTest(rw http.ResponseWriter, rq *http.Request) {
-	resp, err := http.Get("https://mlctrez.com")
+func (s *CloseableServer) sslTest(ctx *gin.Context) {
+	resp, err := http.Get("https://example.com")
 	if err != nil {
-		fmt.Fprintf(rw, "error retrieving https://mlctrez.com  %s", err)
+		_ = ctx.Error(fmt.Errorf("error retrieving https://example.com %s", err))
 		return
 	}
-	io.Copy(rw, resp.Body)
-}
-
-func (s *CloseableServer) index(rw http.ResponseWriter, rq *http.Request) {
-	rw.Write([]byte("hello world"))
-}
-
-func (s *CloseableServer) favIcon(rw http.ResponseWriter, rq *http.Request) {
-	http.ServeFile(rw, rq, "static/favicon.ico")
+	_, _ = io.Copy(ctx.Writer, resp.Body)
 }
 
 func (s *CloseableServer) shutdownRoutine() {
 	<-s.quit
-	log.Println("shutting down server on interrupt")
+	fmt.Println("shutting down server on interrupt")
 	if err := s.srv.Shutdown(context.Background()); err != nil {
 		log.Fatalf("could not shut down server: %v", err)
 	}
@@ -53,10 +48,11 @@ func (s *CloseableServer) shutdownRoutine() {
 // Start initiates http.ListenAndServe on this server
 func (s *CloseableServer) Start() error {
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", s.index)
-	mux.HandleFunc("/favicon.ico", s.favIcon)
-	mux.HandleFunc("/ssltest", s.sslTest)
+	gin.SetMode(gin.ReleaseMode)
+	mux := gin.Default()
+
+	mux.Use(static.Serve("/", static.LocalFile("./static", false)))
+	mux.GET("/ssltest", s.sslTest)
 
 	s.srv = &http.Server{Addr: ":8080", Handler: mux}
 
